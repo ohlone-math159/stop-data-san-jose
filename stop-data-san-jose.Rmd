@@ -176,9 +176,10 @@ prop.table(table(sanjose$subject_race, sanjose$search_conducted))
 ```{r}
 prop.table(table(sanjose$subject_race, sanjose$search_conducted),1)
 ```
-Try using `piping`
+
+or Variation #2a
 ```{r}
-sanjose %>% table(search_conducted,subject_race) %>% addmargins() %>% prop.table() 
+prop.table(table(sanjose$search_conducted, sanjose$subject_race),2)
 ```
 
 

@@ -1928,6 +1928,80 @@ summarysj</code></pre>
 </table>
 </div>
 </div>
+<div id="advanced-treatment-facilitated-by-purrr-package" class="section level2">
+<h2>Advanced Treatment facilitated by <code>purrr</code> package</h2>
+<pre class="r"><code>library(purrr)
+sanjose %&gt;% filter(type==&quot;vehicular&quot;) %&gt;% select(subject_race, search_conducted, arrest_made, outcome) %&gt;%  split(.$subject_race) %&gt;% map(summary)</code></pre>
+<pre><code>## $`asian/pacific islander`
+##                  subject_race   search_conducted arrest_made    
+##  asian/pacific islander:13155   Mode :logical    Mode :logical  
+##  black                 :    0   FALSE:11865      FALSE:12998    
+##  hispanic              :    0   TRUE :1197       TRUE :127      
+##  other/unknown         :    0   NA's :93         NA's :30       
+##  white                 :    0                                   
+##      outcome    
+##  warning :   0  
+##  citation:5469  
+##  summons :   0  
+##  arrest  : 127  
+##  NA's    :7559  
+## 
+## $black
+##                  subject_race  search_conducted arrest_made    
+##  asian/pacific islander:   0   Mode :logical    Mode :logical  
+##  black                 :7666   FALSE:5759       FALSE:7478     
+##  hispanic              :   0   TRUE :1834       TRUE :177      
+##  other/unknown         :   0   NA's :73         NA's :11       
+##  white                 :   0                                   
+##      outcome    
+##  warning :   0  
+##  citation:2154  
+##  summons :   0  
+##  arrest  : 177  
+##  NA's    :5335  
+## 
+## $hispanic
+##                  subject_race   search_conducted arrest_made    
+##  asian/pacific islander:    0   Mode :logical    Mode :logical  
+##  black                 :    0   FALSE:40147      FALSE:52284    
+##  hispanic              :53683   TRUE :13201      TRUE :1269     
+##  other/unknown         :    0   NA's :335        NA's :130      
+##  white                 :    0                                   
+##      outcome     
+##  warning :    0  
+##  citation:17851  
+##  summons :    0  
+##  arrest  : 1269  
+##  NA's    :34563  
+## 
+## $`other/unknown`
+##                  subject_race  search_conducted arrest_made    
+##  asian/pacific islander:   0   Mode :logical    Mode :logical  
+##  black                 :   0   FALSE:6178       FALSE:7908     
+##  hispanic              :   0   TRUE :795        TRUE :117      
+##  other/unknown         :8043   NA's :1070       NA's :18       
+##  white                 :   0                                   
+##      outcome    
+##  warning :   0  
+##  citation:3242  
+##  summons :   0  
+##  arrest  : 117  
+##  NA's    :4684  
+## 
+## $white
+##                  subject_race   search_conducted arrest_made    
+##  asian/pacific islander:    0   Mode :logical    Mode :logical  
+##  black                 :    0   FALSE:14291      FALSE:16200    
+##  hispanic              :    0   TRUE :2074       TRUE :269      
+##  other/unknown         :    0   NA's :144        NA's :40       
+##  white                 :16509                                   
+##      outcome     
+##  warning :    0  
+##  citation: 5811  
+##  summons :    0  
+##  arrest  :  269  
+##  NA's    :10429</code></pre>
+</div>
 </div>
 <div id="turning-in-your-work" class="section level1">
 <h1>Turning in your work</h1>
