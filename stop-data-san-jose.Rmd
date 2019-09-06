@@ -176,6 +176,12 @@ prop.table(table(sanjose$subject_race, sanjose$search_conducted))
 ```{r}
 prop.table(table(sanjose$subject_race, sanjose$search_conducted),1)
 ```
+Try using `piping`
+```{r}
+sanjose %>% table(search_conducted,subject_race) %>% addmargins() %>% prop.table() 
+```
+
+
 
 ### Variation #3
 ```{r}
@@ -284,6 +290,17 @@ sanjose %>%
   group_by(year) %>% 
   summarize(count=n(), prop_search =round(length(which(search_conducted=="TRUE"))/n(),2))
 ```
+
+## Advanced Treatment facilitated by `purrr` package
+```{r}
+library(purrr)
+sanjose %>% filter(type=="vehicular") %>% select(subject_race, search_conducted, arrest_made, outcome) %>%  split(.$subject_race) %>% map(summary)
+
+```
+
+
+
+
 # Turning in your work
 
 Submit your problem set **html** file on Canvas. This involves downloading the html file **from the R Studio Server to your personal computer**. The steps to do this are as follows: 
