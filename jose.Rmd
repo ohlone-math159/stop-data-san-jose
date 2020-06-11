@@ -1,0 +1,13 @@
+---
+title: "Lab 2 - Data Exploration"
+
+output:
+  html_document:
+    theme: lumen
+    toc: yes
+    toc_float: yes
+    df_print: kable
+    css: lab.css
+---
+
+1.  Where did this data file come from?  How do you know?

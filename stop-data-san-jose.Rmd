@@ -53,6 +53,8 @@ These packages are already installed for you in this `project`. **Every time** y
 ```{r message=FALSE}
 library(ggplot2)
 library(dplyr)
+library(janitor)
+library(kableExtra)
 ```
 
 Remember, "running code means" telling R "do this". You tell R to do something by passing it through the console. You can run existing code many ways:
@@ -140,10 +142,10 @@ ggplot(sanjose, aes(x=subject_race))+
 
 If you prefer to see the proportions, you'll need to add `y= ..prop.., group=1` to `ggplot`'s  `aes`thetic
 
-```{r}
+```{r graph of prop}
 ggplot(sanjose, aes(x=subject_race, y= ..prop.., group=1))+
   geom_bar()+
-    geom_text(stat="count", aes(label=round(..prop.., 2), y=..prop..+ 0.02))  ##adds labels
+    geom_text(stat="count", aes(label=round(..prop.., 2), y=..prop..+ 0.02)) ##adds labels
 ```
 
 
@@ -174,7 +176,7 @@ prop.table(table(sanjose$subject_race, sanjose$search_conducted))
 
 ### Variation #2
 ```{r}
-prop.table(table(sanjose$subject_race, sanjose$search_conducted),1)
+round(prop.table(table(sanjose$subject_race, sanjose$arrest_made),1),2)
 ```
 
 or Variation #2a
@@ -182,6 +184,31 @@ or Variation #2a
 prop.table(table(sanjose$search_conducted, sanjose$subject_race),2)
 ```
 
+Q1 for first exam - sample of 1000 traffic stops in San Jose and breakdown by search and subject's race.
+
+```{r}
+sanjose %>% 
+  
+  filter(type == "vehicular") %>% 
+  
+  sample_n(1000) %>% 
+  
+  filter(subject_race %in% c("asian/pacific islander","black","hispanic", "white")) %>%
+  filter(search_conducted %in% c("FALSE", "TRUE")) %>% 
+  droplevels() %>% 
+  
+  tabyl(subject_race,search_conducted) %>% 
+    adorn_totals("row") %>% 
+    adorn_percentages("row") %>% 
+    adorn_pct_formatting(digits=0) %>% 
+  
+  kable() %>% 
+    kable_styling(bootstrap_options = "striped",
+                  full_width = T, 
+                  position="left") %>% 
+    add_header_above(c("","Search was conducted"=2))
+    
+```
 
 
 ### Variation #3
@@ -226,9 +253,10 @@ ggplot(sanjose, aes(x=subject_race, fill=search_conducted))+
 ## Advanced treatment, filtering the data frame and then analysizing
 ```{r}
 sanjose_ped <- sanjose %>% 
-  filter(type=="pedestrian")
+  filter(type=="vehicular") %>% 
+  filter(search_conducted == "TRUE")  
 
-ggplot(data=sanjose_ped, aes(x=subject_race, fill=outcome))+
+ggplot(data=sanjose_ped, aes(x=subject_race, fill=contraband_found))+
   geom_bar(position="dodge")
 ```
 
@@ -259,7 +287,7 @@ sanjose_ped <- sanjose_ped %>%
 How has the number of police stops per year changed? (note data for 2013 and 2018 is incomplete)
 
 ```{r}
-table(sanjose$year, sanjose$type)
+prop.table(table(sanjose$year, sanjose$type),1)
 ```
 
 How has the racial breakdown of all police stops changed over the past 5 years?
