@@ -112,7 +112,7 @@ The `table()` function requires an input of the **variable** that to be tabulate
 
 This is the command to have R compute the number of police stops broken down by `subject_race` for the entire `sanjose` data frame.
 ```{r}
-table(sanjose$subject_race)
+table(sanjose$use_of_force_reason)
 ```
 
 If we prefer to see this summary as proportions of the total we can **nest** the table function inside the `prop.table()` function.
@@ -279,9 +279,6 @@ Create a new variable `year` for both data frames
 ```{r}
 sanjose <- sanjose %>% 
   mutate(year = year(date))
-
-sanjose_ped <- sanjose_ped %>% 
-  mutate(year = year(date))
 ```
 
 How has the number of police stops per year changed? (note data for 2013 and 2018 is incomplete)
@@ -327,7 +324,28 @@ sanjose %>% filter(type=="vehicular") %>% select(subject_race, search_conducted,
 
 ```
 
+```{r}
+glimpse(sanjose)
+```
 
+```{r}
+sjpd <- sanjose %>% 
+  filter(year == "2017", type == "vehicular") %>% 
+  select( subject_race, search_conducted, contraband_found, outcome, arrest_made, use_of_force_description)
+  
+
+
+sjpd$search_conducted <- as.factor(sjpd$search_conducted)
+sjpd$contraband_found <- as.factor(sjpd$contraband_found)
+sjpd$arrest_made <- as.factor(sjpd$arrest_made)
+glimpse(sjpd)
+```
+
+```{r}
+library(jsonlite)
+write( toJSON(sjpd, dataframe = 'columns'), 'sjpd_2017.json')
+write.csv(sjpd, file="sjpd_2017.csv")
+```
 
 
 # Turning in your work
