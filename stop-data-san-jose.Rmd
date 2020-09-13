@@ -113,6 +113,7 @@ The `table()` function requires an input of the **variable** that to be tabulate
 This is the command to have R compute the number of police stops broken down by `subject_race` for the entire `sanjose` data frame.
 ```{r}
 table(sanjose$use_of_force_reason)
+table(sanjose$use_of_force_reason,sanjose$use_of_force_description)
 ```
 
 If we prefer to see this summary as proportions of the total we can **nest** the table function inside the `prop.table()` function.
@@ -331,13 +332,14 @@ glimpse(sanjose)
 ```{r}
 sjpd <- sanjose %>% 
   filter(year == "2017", type == "vehicular") %>% 
-  select( subject_race, search_conducted, contraband_found, outcome, arrest_made, use_of_force_description)
+  select( subject_race, search_conducted, contraband_found, citation_issued, arrest_made, reason_for_stop, use_of_force_description)
   
 
 
 sjpd$search_conducted <- as.factor(sjpd$search_conducted)
 sjpd$contraband_found <- as.factor(sjpd$contraband_found)
 sjpd$arrest_made <- as.factor(sjpd$arrest_made)
+sjpd$citation_issued <- as.factor(sjpd$citation_issued)
 glimpse(sjpd)
 ```
 
